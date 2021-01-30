@@ -1,12 +1,40 @@
 // geojson data is loaded in the config file
 // use allWeekURL from config.js
+
+// radius multiplier
+var radiusX = 5;
+
 // grab data with d3
 d3.json(allWeekURL, function (data) {
+  console.log(data.features);
   console.log(data);
+
+  var geojsonMarkerOptions = {
+    radius: 8,  // this should be data.features.properties.mag
+    fillColor: "#ff7800", // this should be a range of colors based on depth geometry.coordinates[2]
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
 
   // create features
   // create a geoJSON layer containing the features array on the earthquakes object
-  var earthquakes = L.geoJSON()
+  var earthquakes = L.geoJSON(data.features, {
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng, {
+        radius: feature.properties.mag * radiusX,
+        fillColor: "#ff7800",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+      });
+    },
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(`${feature.properties.place}`);
+    }
+  }).addTo(myMap);
 
 
 
