@@ -32,7 +32,7 @@ d3.json(allWeekURL, function (data) {
       });
     },
     onEachFeature: function (feature, layer) {
-      layer.bindPopup(`${feature.properties.place}`);
+      layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
     }
   }).addTo(myMap);
 
