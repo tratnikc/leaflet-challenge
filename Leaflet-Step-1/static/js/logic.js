@@ -1,3 +1,17 @@
+// geojson data is loaded in the config file
+// use allWeekURL from config.js
+// grab data with d3
+d3.json(allWeekURL, function (data) {
+  console.log(data);
+
+  // create features
+  // create a geoJSON layer containing the features array on the earthquakes object
+  var earthquakes = L.geoJSON()
+
+
+
+}); // d3.json
+
 // create map layers
 // streetmap
 var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -36,6 +50,11 @@ var baseMaps = {
   "Outdoors": outdoors
 };
 
+// create overlay object to hold overlay layer
+var overlayMaps = {
+  // Earthquakes: earthquakes
+};
+
 // Creating map object, attach streetmap, 
 var myMap = L.map("map", {
   center: [34.0522, -118.2437],
@@ -43,13 +62,10 @@ var myMap = L.map("map", {
   layers: [streetmap]
 });
 
-
-
-// geojson data is loaded in the config file
-var geojson;
-
-// grab data with d3
-d3.json(allWeek, function (data) {
-  console.log(data);
-
-})
+// create a layer control
+// pass baseMaps and overlayMaps
+// add the layer control to the map
+L.control.layers(baseMaps, overlayMaps, {
+  collapsed: false
+}).addTo(myMap);
+ 
