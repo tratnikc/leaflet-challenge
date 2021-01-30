@@ -2,7 +2,7 @@
 // use allWeekURL from config.js
 
 // radius multiplier
-var radiusX = 5;
+var radiusX = 6;
 
 // grab data with d3
 d3.json(allWeekURL, function (data) {
@@ -32,7 +32,7 @@ d3.json(allWeekURL, function (data) {
       });
     },
     onEachFeature: function (feature, layer) {
-      layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
+      layer.bindPopup(`<h3>Magnitude: ${feature.properties.mag}<br>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
     }
   }).addTo(myMap);
 
