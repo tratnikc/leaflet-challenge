@@ -96,4 +96,21 @@ var myMap = L.map("map", {
 L.control.layers(baseMaps, overlayMaps, {
   collapsed: false
 }).addTo(myMap);
+
+// set legend at bottom right of screen
+var legend = L.control({
+  position: 'bottomright'
+});
+
+// add legend
+legend.onAdd = function (color) {
+  var div = L.DomUtil.create('div', 'info legend');
+  var levels = ['>1','1-2','2-3','3-4','4-5','5+'];
+  var colors = ['#3c0','#9f6','#fc3','#f93','#c60','#c00'];
+  for (var i=0; i < levels.length; i++) {
+    div.innerHTML += '<li style="background:' + colors[i] + '"></li>' + levels[i] + '<br>';
+  }
+  return div;
+}
+legend.addTo(myMap);
  
