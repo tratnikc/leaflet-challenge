@@ -11,12 +11,27 @@ d3.json(allWeekURL, function (data) {
 
   var geojsonMarkerOptions = {
     radius: 8,  // this should be data.features.properties.mag
-    fillColor: "#ff7800", // this should be a range of colors based on depth geometry.coordinates[2]
+    fillColor: "#ff7800", // this should be a range of colors based on depth -> geometry.coordinates[2]
     color: "#000",
     weight: 1,
     opacity: 1,
     fillOpacity: 0.8
-};
+  };
+
+  function getColor(d) {
+    console.log(d);
+    switch (true) {
+      case (d > 90) : return '#800000'; break;  // maroon
+      case (d > 70 && d <= 90) : return '#ff8243'; break; // mango tango
+      case (d > 50 && d <= 70) : return '#e25822'; break;  // flame
+      case (d > 30 && d <= 50) : return '#ffbf00'; break; // flourescent orange
+      case (d > 30 && d <= 40) : return '#f8de7e'; break; // jasmine
+      case (d > 10 && d <= 30) : return '#ccff00'; break;  // flourescent yellow
+      case (d > -10 && d <= 10) : return '#00ff00'; break; //  green
+      default: return '#087830';  // la salle green
+    }
+
+  } 
 
   // create features
   // create a geoJSON layer containing the features array on the earthquakes object
@@ -24,7 +39,7 @@ d3.json(allWeekURL, function (data) {
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(latlng, {
         radius: feature.properties.mag * radiusX,
-        fillColor: "#ff7800",
+        fillColor: getColor(feature.geometry.coordinates[2]),
         color: "#000",
         weight: 1,
         opacity: 1,
@@ -32,13 +47,14 @@ d3.json(allWeekURL, function (data) {
       });
     },
     onEachFeature: function (feature, layer) {
-      layer.bindPopup(`<h3>Magnitude: ${feature.properties.mag}<br>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
+      layer.bindPopup(`<h3>Magnitude: ${feature.properties.mag}<br>
+      Depth: ${feature.geometry.coordinates[2]} <br>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
     }
   }).addTo(myMap);
 
 
 
-}); // d3.json
+}); // end d3.json
 
 // create map layers
 // streetmap
@@ -105,8 +121,8 @@ var legend = L.control({
 // add legend
 legend.onAdd = function (color) {
   var div = L.DomUtil.create('div', 'info legend');
-  var levels = ['>1','1-2','2-3','3-4','4-5','5+'];
-  var colors = ['#3c0','#9f6','#fc3','#f93','#c60','#c00'];
+  var levels = ['-10-10','10-30','30-50','50-70','70-90','90+'];
+  var colors = ['#00ff00','#ccff00','#f8de7e','#ffbf00','#ff8243','#800000'];
   for (var i=0; i < levels.length; i++) {
     div.innerHTML += '<li style="background:' + colors[i] + '"></li>' + levels[i] + '<br>';
   }
