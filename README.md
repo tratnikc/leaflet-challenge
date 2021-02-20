@@ -55,7 +55,7 @@ In this step we are going to..
 * Add layer controls to our map.
 
 
-### Screenshots
+## Screenshots
 #### Level 1
 <img src="./images/level-1.png" width="960" height="500" />
 
