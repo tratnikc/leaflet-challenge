@@ -9,15 +9,6 @@ d3.json(allWeekURL, function (data) {
   console.log(data.features);
   console.log(data);
 
-  var geojsonMarkerOptions = {
-    radius: 8,  // this should be data.features.properties.mag
-    fillColor: "#ff7800", // this should be a range of colors based on depth -> geometry.coordinates[2]
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-  };
-
   function getColor(d) {
     return d > 90 ? '#b31b1b' : 
            d > 70  ? '#ff4040' : 
