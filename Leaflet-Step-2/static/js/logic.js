@@ -42,7 +42,7 @@ function createMap(data, plates) {
     },
     style: function(feature) {
       return {
-        color: "#ff3800",
+        color: "#2a52be",
         weight: 3
       };
     }
