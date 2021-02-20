@@ -1,6 +1,7 @@
 // last seven days
 const quakeURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
-const tectonicURL = "../static/data/PB2002_plates.json";
+// const tectonicURL = "../static/data/PB2002_plates.json";
+const tectonicURL = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json";
 const radiusX = 4;
 console.log(quakeURL);
 console.log(tectonicURL);
