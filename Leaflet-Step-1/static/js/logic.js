@@ -19,7 +19,6 @@ d3.json(allWeekURL, function (data) {
   };
 
   function getColor(d) {
-    console.log(d);
     switch (true) {
       case (d > 90) : return '#800000'; break;  // maroon
       case (d > 70 && d <= 90) : return '#ff8243'; break; // mango tango
@@ -57,27 +56,27 @@ d3.json(allWeekURL, function (data) {
 }); // end d3.json
 
 // create map layers
-// streetmap
-var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+// greyscale
+var greyscale = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
   tileSize: 512,
   maxZoom: 18,
   zoomOffset: -1,
-  id: "mapbox/streets-v11",
+  id: "mapbox/light-v10",
   accessToken: API_KEY
 });
 
-// darkmap
-var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+// satellite
+var satellite = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
   tileSize: 512,
   maxZoom: 18,
   zoomOffset: -1,
-  id: "mapbox/dark-v10",
+  id: "mapbox/satellite-v9",
   accessToken: API_KEY
 });
 
-// darkmap
+// outdoors
 var outdoors = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
   tileSize: 512,
@@ -89,9 +88,9 @@ var outdoors = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/
 
 // define baseMaps object to hold base layers
 var baseMaps = {
-  "Street Map": streetmap,
-  "Dark Map": darkmap,
-  "Outdoors": outdoors
+  "Satellite ": satellite,
+  "Grayscale ": greyscale,
+  "Outdoors ": outdoors
 };
 
 // create overlay object to hold overlay layer
@@ -103,7 +102,7 @@ var overlayMaps = {
 var myMap = L.map("map", {
   center: [34.0522, -118.2437],
   zoom: 5,
-  layers: [streetmap]
+  layers: [greyscale]
 });
 
 // create a layer control
@@ -120,13 +119,12 @@ var legend = L.control({
 
 // add legend
 legend.onAdd = function (color) {
-  var div = L.DomUtil.create('div', 'info legend');
+  var div = L.DomUtil.create('div', 'info-legend');
   var levels = ['-10-10','10-30','30-50','50-70','70-90','90+'];
   var colors = ['#00ff00','#ccff00','#f8de7e','#ffbf00','#ff8243','#800000'];
   for (var i=0; i < levels.length; i++) {
-    div.innerHTML += '<li style="background:' + colors[i] + '"></li>' + levels[i] + '<br>';
+    div.innerHTML += '<li style="background:' + colors[i] + '">' + levels[i] + '</li>';
   }
   return div;
 }
 legend.addTo(myMap);
- 
