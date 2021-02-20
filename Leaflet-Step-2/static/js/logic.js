@@ -44,7 +44,8 @@ function createMap(data, plates) {
     style: function(feature) {
       return {
         color: "#2a52be",
-        weight: 3
+        weight: 3,
+        fillOpacity: 0
       };
     }
   });
