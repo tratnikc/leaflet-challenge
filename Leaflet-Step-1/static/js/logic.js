@@ -74,8 +74,6 @@ legend.onAdd = function (color) {
 legend.addTo(myMap);
 
 
-
-
 }); // end d3.json
 
 // create map layers
@@ -116,10 +114,6 @@ var baseMaps = {
   "Outdoors ": outdoors
 };
 
-// create overlay object to hold overlay layer
-var overlayMaps = {
-  // Earthquakes: earthquakes
-};
 
 // Creating map object, attach streetmap, 
 var myMap = L.map("map", {
@@ -131,6 +125,6 @@ var myMap = L.map("map", {
 // create a layer control
 // pass baseMaps and overlayMaps
 // add the layer control to the map
-L.control.layers(baseMaps, overlayMaps, {
+L.control.layers(baseMaps, {
   collapsed: false
 }).addTo(myMap);
