@@ -11,12 +11,13 @@ d3.json(tectonicURL, function (tectonicdata) {
 
     d3.json(quakeURL, function (quakedata) {
       console.log(quakedata);
-      
-      createMap(quakedata);
+
+      createMap(quakedata, tectonicdata);
+
     }); // quakeURL
 }); // tectonicURL
 
-function createMap(data) {
+function createMap(data, plates) {
 
   var earthquakes = L.geoJSON(data.features, {
     pointToLayer: function (feature, latlng) {
@@ -33,7 +34,20 @@ function createMap(data) {
       layer.bindPopup(`<h3>Magnitude: ${feature.properties.mag}<br>
       Depth: ${feature.geometry.coordinates[2]} <br>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
     }
-  })
+  });
+
+  var tectoniclines = L.geoJSON(plates, {
+    onEachFeature: function (feature, layer) {
+      L.polyline(feature.geometry.coordinates);
+    },
+    style: function(feature) {
+      return {
+        color: "#ff3800",
+        weight: 3
+      };
+    }
+  });
+
 
   var greyscale = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
@@ -71,14 +85,15 @@ function createMap(data) {
   };
 
   var overlayMaps = {
-    "Earthquakes": earthquakes
+    "Earthquakes": earthquakes,
+    "Fault Lines": tectoniclines
   };
 
   // create map object
   var myMap = L.map('map', {
     center: [34.0522, -118.2437],
     zoom: 5,
-    layers: [greyscale, earthquakes]
+    layers: [greyscale, earthquakes, tectoniclines]
   });
 
   L.control.layers(baseMaps, overlayMaps, {
