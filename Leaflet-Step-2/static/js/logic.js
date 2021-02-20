@@ -94,7 +94,7 @@ function createMap(data, plates) {
   var myMap = L.map('map', {
     center: [34.0522, -118.2437],
     zoom: 5,
-    layers: [greyscale, earthquakes, tectoniclines]
+    layers: [satellite, earthquakes, tectoniclines]
   });
 
   L.control.layers(baseMaps, overlayMaps, {
