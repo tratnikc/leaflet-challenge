@@ -1,6 +1,5 @@
-// geojson data is loaded in the config file
-// use allWeekURL from config.js
-
+// get data
+const allWeekURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 // radius multiplier
 var radiusX = 4;
 
