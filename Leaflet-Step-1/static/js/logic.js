@@ -2,7 +2,7 @@
 // use allWeekURL from config.js
 
 // radius multiplier
-var radiusX = 6;
+var radiusX = 4;
 
 // grab data with d3
 d3.json(allWeekURL, function (data) {
@@ -19,18 +19,23 @@ d3.json(allWeekURL, function (data) {
   };
 
   function getColor(d) {
-    switch (true) {
-      case (d > 90) : return '#800000'; break;  // maroon
-      case (d > 70 && d <= 90) : return '#ff8243'; break; // mango tango
-      case (d > 50 && d <= 70) : return '#e25822'; break;  // flame
-      case (d > 30 && d <= 50) : return '#ffbf00'; break; // flourescent orange
-      case (d > 30 && d <= 40) : return '#f8de7e'; break; // jasmine
-      case (d > 10 && d <= 30) : return '#ccff00'; break;  // flourescent yellow
-      case (d > -10 && d <= 10) : return '#00ff00'; break; //  green
-      default: return '#087830';  // la salle green
-    }
-
-  } 
+    return d > 90 ? '#b31b1b' : 
+           d > 70  ? '#ff4040' : 
+           d > 50  ? '#ed9121' : 
+           d > 30   ? '#f8de7e' :
+           d > 10   ? '#ccff00' :
+                      '#00ff00';
+  }
+    // switch (true) {
+    //   case (d > 90) : return '#b31b1b'; break;  // carnelian
+    //   case (d > 70 && d <= 90) : return '#ff8243'; break; // mango tango
+    //   case (d > 50 && d <= 70) : return '#e25822'; break;  // flame
+    //   case (d > 30 && d <= 50) : return '#f8de7e'; break; // jasmine
+    //   case (d > 10 && d <= 30) : return '#ccff00'; break;  // flourescent yellow
+    //   case (d > -10 && d <= 10) : return '#00ff00'; break; //  green
+    //   default: return '#087830';  // la salle green
+    // }
+  
 
   // create features
   // create a geoJSON layer containing the features array on the earthquakes object
@@ -50,6 +55,24 @@ d3.json(allWeekURL, function (data) {
       Depth: ${feature.geometry.coordinates[2]} <br>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
     }
   }).addTo(myMap);
+
+  // set legend at bottom right of screen
+var legend = L.control({
+  position: 'bottomright'
+});
+
+// add legend
+legend.onAdd = function (color) {
+  var div = L.DomUtil.create('div', 'info legend');
+  var levels = ['-10-10','10-30','30-50','50-70','70-90','90+'];
+  var colors = ['#00ff00','#ccff00','#f8de7e','#ed9121','#ff4040','#b31b1b'];
+  for (var i=0; i < levels.length; i++) {
+    div.innerHTML += '<i style="background:' + colors[i] + '"></i>' + levels[i] + '<br>';
+  }
+  return div;
+}
+legend.addTo(myMap);
+
 
 
 
@@ -111,20 +134,3 @@ var myMap = L.map("map", {
 L.control.layers(baseMaps, overlayMaps, {
   collapsed: false
 }).addTo(myMap);
-
-// set legend at bottom right of screen
-var legend = L.control({
-  position: 'bottomright'
-});
-
-// add legend
-legend.onAdd = function (color) {
-  var div = L.DomUtil.create('div', 'info-legend');
-  var levels = ['-10-10','10-30','30-50','50-70','70-90','90+'];
-  var colors = ['#00ff00','#ccff00','#f8de7e','#ffbf00','#ff8243','#800000'];
-  for (var i=0; i < levels.length; i++) {
-    div.innerHTML += '<li style="background:' + colors[i] + '">' + levels[i] + '</li>';
-  }
-  return div;
-}
-legend.addTo(myMap);
